@@ -3,11 +3,10 @@ Sets each Taiga user story's status from its tasks' statuses.
 Runs once and exits; GitHub Actions runs it on a schedule.
 
 Rules (checked top to bottom, first match wins):
-  1. any task  Rejected        -> story Rejected
-  2. any task  Testing         -> story Testing
-  3. any task  In Progress     -> story In Progress
-  4. all tasks Done            -> story Ready For Live
-  5. all tasks Ready For Test  -> story Ready For Test
+  1. any task  Testing         -> story Testing
+  2. any task  In Progress     -> story In Progress
+  3. all tasks Done            -> story Ready For Live
+  4. all tasks Ready For Test  -> story Ready For Test
   otherwise (or no tasks)      -> story left unchanged
 """
 import os
@@ -20,7 +19,6 @@ API = "https://api.taiga.io/api/v1"
 PROJECT_SLUG = "doruk-masters-of-madness-30"
 
 ANY_RULES = [                    # one matching task is enough
-    ("Rejected", "Rejected"),
     ("Testing", "Testing"),
     ("In Progress", "In Progress"),
 ]

@@ -4,10 +4,11 @@ Runs once and exits; GitHub Actions runs it on a schedule.
 
 Rules (checked top to bottom, first match wins):
   1. any task  Testing         -> story Testing
-  2. any task  In progress     -> story In progress
-  3. all tasks Done            -> story Ready for live
-  4. all tasks Ready for test  -> story Ready for test
+  2. any task  In Progress     -> story In Progress
+  3. all tasks Done            -> story Ready For Live
+  4. all tasks Ready For Test  -> story Ready For Test
   otherwise (or no tasks)      -> story left unchanged
+Stories already in Live or Complete are never changed.
 """
 import os
 import sys
@@ -20,11 +21,14 @@ PROJECT_SLUG = "doruk-masters-of-madness-30"
 
 ANY_RULES = [                    # one matching task is enough
     ("Testing", "Testing"),
-    ("In progress", "In progress"),
+    ("In Progress", "In Progress"),
 ]
+# Stories in these statuses are never touched
+PROTECTED_STATUSES = {"Live", "Complete"}
+
 ALL_RULES = [                    # every task must match
-    ("Done", "Ready for live"),
-    ("Ready for test", "Ready for test"),
+    ("Done", "Ready For Live"),
+    ("Ready For Test", "Ready For Test"),
 ]
 
 
@@ -71,6 +75,8 @@ def main():
         if wanted is None:
             continue
         story = s.get(f"{API}/userstories/{us_id}").json()
+        if story["status_extra_info"]["name"] in PROTECTED_STATUSES:
+            continue
         if story["status"] == story_status_ids[wanted]:
             continue
         r = s.patch(f"{API}/userstories/{us_id}", json={

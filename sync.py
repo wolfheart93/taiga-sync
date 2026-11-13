@@ -4,9 +4,9 @@ Runs once and exits; GitHub Actions runs it on a schedule.
 
 Rules (checked top to bottom, first match wins):
   1. any task  Testing         -> story Testing
-  2. any task  In Progress     -> story In Progress
-  3. all tasks Done            -> story Ready For Live
-  4. all tasks Ready For Test  -> story Ready For Test
+  2. any task  In progress     -> story In progress
+  3. all tasks Done            -> story Ready for live
+  4. all tasks Ready for test  -> story Ready for test
   otherwise (or no tasks)      -> story left unchanged
 """
 import os
@@ -20,11 +20,11 @@ PROJECT_SLUG = "doruk-masters-of-madness-30"
 
 ANY_RULES = [                    # one matching task is enough
     ("Testing", "Testing"),
-    ("In Progress", "In Progress"),
+    ("In progress", "In progress"),
 ]
 ALL_RULES = [                    # every task must match
-    ("Done", "Ready For Live"),
-    ("Ready For Test", "Ready For Test"),
+    ("Done", "Ready for live"),
+    ("Ready for test", "Ready for test"),
 ]
 
 
